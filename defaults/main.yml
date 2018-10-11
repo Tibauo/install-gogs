@@ -1,0 +1,12 @@
+---
+# defaults file for install-gogs
+
+gogs_platform: "{{ ansible_os_family }}"
+
+gogs_user: user
+gogs_group: user
+
+gogs_url: https://dl.gogs.io/0.11.66/gogs_0.11.66_linux_amd64.tar.gz
+root_url: localhost
+root_url_port: 3000
+folder_install: /opt

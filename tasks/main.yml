@@ -1,0 +1,22 @@
+---
+# tasks file for install-gogs
+
+- name: Include OS-specific variables.
+  include_vars: "{{ ansible_os_family }}.yaml"
+
+- name: Disable firewalld
+  become: yes
+  systemd:
+    name: firewalld
+    state: stopped
+  when: ansible_os_family == "RedHat"
+
+- name: Install required package
+  become: yes
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ package_required }}"
+
+- name: Install Gogs
+  include: install.yaml

@@ -1,0 +1,16 @@
+[Unit]
+Description=Gogs
+After=syslog.target
+After=network.target
+
+[Service]
+Type=simple
+User={{ gogs_user }}
+Group={{ gogs_group }}
+WorkingDirectory={{ folder_install }}/gogs/home_dir
+ExecStart={{ folder_install }}/gogs/gogs web
+Restart=always
+Environment=USER={{ gogs_user }} HOME={{ folder_install }}/gogs
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,49 @@
+- name: Get Gogs binaries
+  become: yes
+  unarchive:
+    src: "{{ gogs_url }}"
+    dest: "{{ folder_install }}"
+    remote_src: yes
+
+- name: Create folder
+  become: yes
+  file: 
+    path: "{{ folder_install }}/gogs/custom/conf/"
+    state: directory
+
+- name: create config
+  become: yes
+  template:
+    dest: "{{ folder_install }}/gogs/custom/conf/app.ini"
+    src: app.ini.j2 
+
+- name: Create folder
+  become: yes
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ folder_install }}/gogs/gogs-repositories"
+    - "{{ folder_install }}/gogs/home_dir/"
+
+- name: Configure systemd
+  become: yes
+  template:
+    src: gogs.service.j2
+    dest: /etc/systemd/system/gogs.service
+
+- name: Set user as owner
+  become: yes
+  file:
+    path: "{{ folder_install }}/gogs/"
+    owner: "{{ gogs_user }}"
+    group: "{{  gogs_group }}"
+    recurse: yes
+
+- name: Start Gogs
+  become: yes
+  systemd:
+    name: gogs
+    state: started
+    enabled: yes
+    daemon_reload: yes
