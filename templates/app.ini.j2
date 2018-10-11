@@ -15,9 +15,9 @@ PATH     = {{ folder_install }}/gogs/data/gogs.db
 ROOT = {{ folder_install }}/gogs/gogs-repositories
 
 [server]
-DOMAIN           = localhost
+DOMAIN           = {{ root_url }}
 HTTP_PORT        = 3000
-ROOT_URL         = http://{{ root_url }}:{{ root_url_port }}/
+ROOT_URL         = http://{{ root_url }}:{{ root_url_port | default(80)}}/{{ gogs_url_location }}
 DISABLE_SSH      = false
 SSH_PORT         = 22
 START_SSH_SERVER = false
